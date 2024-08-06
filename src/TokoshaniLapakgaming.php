@@ -13,9 +13,10 @@ class TokoshaniLapakgaming
 
     public function __construct()
     {
-        $this->client = new Client(['base_uri' => $this->endpoint]);
         $this->endpoint = config('tokoshani-lapakgaming.endpoint');
         $this->apikey = config('tokoshani-lapakgaming.api_key');
+        $this->client = new Client(['base_uri' => $this->endpoint]);
+      
     }
 
     public function getCategories()
