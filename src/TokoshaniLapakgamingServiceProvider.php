@@ -18,7 +18,7 @@ class TokoshaniLapakgamingServiceProvider extends ServiceProvider
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'tokoshani-lapakgaming');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'tokoshani-lapakgaming');
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
+        $this->loadRoutesFrom(__DIR__.'/routes/api.php');
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
