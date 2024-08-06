@@ -72,6 +72,31 @@ class TokoshaniLapakgaming
             }
         }
     }
+    public function getProduct($productCode)
+    {
+        try {
+            $response = $this->client->request('GET', 'product', [
+                'headers' => [
+                    'Authorization' => 'Bearer '.$this->apikey
+                ],
+                'query' => [
+                    'product_code' => $productCode,
+                ],
+            ]);
+
+            // Get the response body
+            $body = $response->getBody();
+            return $body->getContents();
+        } catch (RequestException $e) {
+            // Handle exception
+            if ($e->hasResponse()) {
+                $errorResponse = $e->getResponse();
+                return $errorResponse->getStatusCode() . ' - ' . $errorResponse->getReasonPhrase();
+            } else {
+                return $e->getMessage();
+            }
+        }
+    }
     public function getGroupProductsByCategory($categoryCode, $groupProductCode, $countryCode)
     {
         try {

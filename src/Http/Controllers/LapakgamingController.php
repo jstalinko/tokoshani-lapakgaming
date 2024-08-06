@@ -13,7 +13,7 @@ use stdClass;
 
 class LapakgamingController extends Controller
 {
-    
+
     protected $lapakgaming;
 
     public function __construct(TokoshaniLapakgaming $lapakgaming)
@@ -38,5 +38,39 @@ class LapakgamingController extends Controller
             return $this->buildResponse(false, 500, ['errors' => $e]);
         }
     }
+    public function getProduct(?string $category_code = null, ?string $product_code): JsonResponse
+    {
+        try {
+            if ($category_code == null) {
+                $response = $this->lapakgaming->getProduct($product_code);
+            } else if ($product_code == null) {
+                $response = $this->lapakgaming->getProductsByCategory($category_code);
+            } else {
+                return $this->buildResponse(false, 404, ['errors' => 'Not found code params']);
+            }
+            return $this->buildResponse(true, 200, json_decode($response, true));
+        } catch (Exception $e) {
+            return $this->buildResponse(false, 500, ['errors' => $e]);
+        }
+    }
 
+    public function getProducts(): JsonResponse
+    {
+        try {
+            $response = $this->lapakgaming->getAllProducts();
+            return $this->buildResponse(true, 200, json_decode($response, true));
+        } catch (Exception $e) {
+            return $this->buildResponse(false, 500, ['errors' => $e]);
+        }
+    }
+
+    public function orderStatus(string|int $txid): JsonResponse
+    {
+        try {
+            $response = $this->lapakgaming->getOrderStatus($txid);
+            return $this->buildResponse(true, 200, json_decode($response, true));
+        } catch (Exception $e) {
+            return $this->buildResponse(false, 500, ['errors' => $e]);
+        }
+    }
 }
