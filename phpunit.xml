@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+>
+    <testsuites>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <server name="AP" value="false"/>
+        <server name="TOKOSHANI_LAPAKGAMING_PRODUCTION" value="false"/>
+        <server name="TOKOSHANI_LAPAKGAMING_API_KEY" value="6a9dad4a40e5013fe6ced0ea7325d53826ab72ad6df6608d6c474ad8b6d614d2"/>
+    </php>
+</phpunit>
