@@ -1,0 +1,4 @@
+TODO:
+1. add order in database
+2. payment gateway connect
+3. paid -> process order to vip-reseller or lapakgaming depends on provider product
