@@ -24,6 +24,7 @@ class TokoshaniLapakgaming
             $response = $this->client->request('GET', 'category', [
                 'headers' => [
                     'TOKEN' => $this->apikey,
+                    'Authorization' => 'Bearer '.$this->apikey
                 ],
                 'form_params' => [
                     'category' => 'ROXID',
@@ -49,6 +50,9 @@ class TokoshaniLapakgaming
     {
         try {
             $response = $this->client->request('GET', 'product', [
+                'headers' => [
+                    'Authorization' => 'Bearer '.$this->apikey
+                ],
                 'query' => [
                     'category_code' => $categoryCode,
                 ],
@@ -71,6 +75,9 @@ class TokoshaniLapakgaming
     {
         try {
             $response = $this->client->request('GET', 'catalogue/group-products', [
+                'headers' => [
+                    'Authorization' => 'Bearer '.$this->apikey
+                ],
                 'query' => [
                     'category_code' => $categoryCode,
                     'group_product_code' => $groupProductCode,
@@ -95,7 +102,12 @@ class TokoshaniLapakgaming
     public function getAllProducts()
     {
         try {
-            $response = $this->client->request('GET', 'all-products');
+            $response = $this->client->request('GET', 'all-products',
+        [
+            'headers' => [
+                'Authorization' => 'Bearer '.$this->apikey
+            ]
+        ]);
 
             // Get the response body
             $body = $response->getBody();
@@ -116,6 +128,9 @@ class TokoshaniLapakgaming
     {
         try {
             $response = $this->client->request('POST', 'order', [
+                'headers' => [
+                    'Authorization' => 'Bearer '.$this->apikey
+                ],
                 'json' => [
                     'user_id' => $userId,
                     'additional_id' => $additionalId,
@@ -142,6 +157,9 @@ class TokoshaniLapakgaming
     {
         try {
             $response = $this->client->request('GET', 'order_status', [
+                'headers' => [
+                    'Authorization' => 'Bearer '.$this->apikey
+                ],
                 'query' => [
                     'tid' => $tid,
                 ],
