@@ -38,8 +38,10 @@ class LapakgamingController extends Controller
             return $this->buildResponse(false, 500, ['errors' => $e]);
         }
     }
-    public function getProduct(?string $category_code = null, ?string $product_code): JsonResponse
+    public function getProduct(Request $request): JsonResponse
     {
+        $category_code = ($request->category_code !== '') ? $request->category_code : null; 
+        $product_code = ($request->product_code !== '') ? $request->product_code : null;
         try {
             if ($category_code == null) {
                 $response = $this->lapakgaming->getProduct($product_code);
@@ -64,10 +66,10 @@ class LapakgamingController extends Controller
         }
     }
 
-    public function orderStatus(string|int $txid): JsonResponse
+    public function orderStatus(Request $request): JsonResponse
     {
         try {
-            $response = $this->lapakgaming->getOrderStatus($txid);
+            $response = $this->lapakgaming->getOrderStatus($request->txid);
             return $this->buildResponse(true, 200, json_decode($response, true));
         } catch (Exception $e) {
             return $this->buildResponse(false, 500, ['errors' => $e]);
