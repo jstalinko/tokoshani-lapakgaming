@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Jstalinko\TokoshaniLapakgaming\Http\Controllers;
 
 use Exception;
@@ -8,18 +7,17 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Jstalinko\TokoshaniLapakgaming\TokoshaniLapakgaming;
-
 use stdClass;
 
 class LapakgamingController extends Controller
 {
-
     protected $lapakgaming;
 
     public function __construct(TokoshaniLapakgaming $lapakgaming)
     {
         $this->lapakgaming = $lapakgaming;
     }
+
     public function buildResponse(bool $success, int $code, array|stdClass $data): JsonResponse
     {
         $response['success'] = $success;
@@ -29,30 +27,56 @@ class LapakgamingController extends Controller
 
         return response()->json($response, $code, [], JSON_PRETTY_PRINT);
     }
+
+    public function isJson($jsonString, $returnError = false)
+    {
+        $result = json_decode($jsonString);
+
+        if (json_last_error() === JSON_ERROR_NONE) {
+            return true;
+        } else {
+            if ($returnError) {
+                return json_last_error_msg();
+            }
+            return false;
+        }
+    }
+
     public function getCategory()
     {
         try {
             $response = $this->lapakgaming->getCategories();
-            return $this->buildResponse(true, 200, json_decode($response, true));
+            if ($this->isJson($response)) {
+                return $this->buildResponse(true, 200, json_decode($response, true));
+            } else {
+                return $this->buildResponse(true, 200, ['success' => false, 'errors' => $response]);
+            }
         } catch (Exception $e) {
-            return $this->buildResponse(false, 500, ['errors' => $e]);
+            return $this->buildResponse(false, 500, ['success' => false, 'errors' => $e->getMessage()]);
         }
     }
+
     public function getProduct(Request $request): JsonResponse
     {
-        $category_code = ($request->category_code !== '') ? $request->category_code : null; 
-        $product_code = ($request->product_code !== '') ? $request->product_code : null;
+        $category_code = $request->category_code !== '' ? $request->category_code : null;
+        $product_code = $request->product_code !== '' ? $request->product_code : null;
+
         try {
-            if ($category_code == null) {
+            if ($category_code === null) {
                 $response = $this->lapakgaming->getProduct($product_code);
-            } else if ($product_code == null) {
+            } elseif ($product_code === null) {
                 $response = $this->lapakgaming->getProductsByCategory($category_code);
             } else {
                 return $this->buildResponse(false, 404, ['errors' => 'Not found code params']);
             }
-            return $this->buildResponse(true, 200, json_decode($response, true));
+
+            if ($this->isJson($response)) {
+                return $this->buildResponse(true, 200, json_decode($response, true));
+            } else {
+                return $this->buildResponse(true, 200, ['success' => false, 'errors' => $response]);
+            }
         } catch (Exception $e) {
-            return $this->buildResponse(false, 500, ['errors' => $e]);
+            return $this->buildResponse(false, 500, ['success' => false, 'errors' => $e->getMessage()]);
         }
     }
 
@@ -60,9 +84,14 @@ class LapakgamingController extends Controller
     {
         try {
             $response = $this->lapakgaming->getAllProducts();
-            return $this->buildResponse(true, 200, json_decode($response, true));
+
+            if ($this->isJson($response)) {
+                return $this->buildResponse(true, 200, json_decode($response, true));
+            } else {
+                return $this->buildResponse(true, 200, ['success' => false, 'errors' => $response]);
+            }
         } catch (Exception $e) {
-            return $this->buildResponse(false, 500, ['errors' => $e]);
+            return $this->buildResponse(false, 500, ['success' => false , 'errors' => $e->getMessage()]);
         }
     }
 
@@ -70,9 +99,14 @@ class LapakgamingController extends Controller
     {
         try {
             $response = $this->lapakgaming->getOrderStatus($request->txid);
-            return $this->buildResponse(true, 200, json_decode($response, true));
+
+            if ($this->isJson($response)) {
+                return $this->buildResponse(true, 200, json_decode($response, true));
+            } else {
+                return $this->buildResponse(true, 200, ['success' => false, 'errors' => $response]);
+            }
         } catch (Exception $e) {
-            return $this->buildResponse(false, 500, ['errors' => $e]);
+            return $this->buildResponse(false, 500, ['success' => false, 'errors' => $e->getMessage()]);
         }
     }
 }
