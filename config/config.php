@@ -13,7 +13,7 @@ return [
     | variable "TOKOSHANI_LAPAKGAMING_PRODUCTION".
     |
     */
-    'production' => env('TOKOSHANI_LAPAKGAMING_PRODUCTION', false),
+    'production' => env('TOKOSHANI_LAPAKGAMING_PRODUCTION', true),
 
     /*
     |--------------------------------------------------------------------------

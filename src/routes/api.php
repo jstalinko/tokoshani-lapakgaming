@@ -10,6 +10,7 @@ Route::group(['prefix' => 'shn-api'], function () {
         Route::get('/product-category/{category_code}' , [LapakgamingController::class , 'getProduct'])->name('tokoshani.lapakgaming.getproductbycategory');
         Route::get('/product/{product_code}' , [LapakgamingController::class , 'getProduct'])->name('tokoshani.lapakgaming.getproductbycode');
         Route::get('/order-status/{txid}' , [LapakgamingController::class , 'orderStatus'])->name('tokoshani.lapakgaming.orderstatus');
+        Route::get('/check-uid' , [LapakgamingController::class , 'checkUid'])->name('tokoshani.lapakgaming.checkuid');
 
     });
 });

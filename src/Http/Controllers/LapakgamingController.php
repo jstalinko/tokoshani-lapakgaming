@@ -91,7 +91,7 @@ class LapakgamingController extends Controller
                 return $this->buildResponse(true, 200, ['success' => false, 'errors' => $response]);
             }
         } catch (Exception $e) {
-            return $this->buildResponse(false, 500, ['success' => false , 'errors' => $e->getMessage()]);
+            return $this->buildResponse(false, 500, ['success' => false, 'errors' => $e->getMessage()]);
         }
     }
 
@@ -106,6 +106,35 @@ class LapakgamingController extends Controller
                 return $this->buildResponse(true, 200, ['success' => false, 'errors' => $response]);
             }
         } catch (Exception $e) {
+            return $this->buildResponse(false, 500, ['success' => false, 'errors' => $e->getMessage()]);
+        }
+    }
+
+    public function checkUid(Request $request): JsonResponse
+    {
+        // Validate mandatory fields and allow optional fields
+        $validated = $request->validate([
+            'category_code' => 'required|string',
+            'user_id' => 'required|string',
+            'additional_id' => 'nullable|string',
+            'additional_information' => 'nullable|string',
+        ]);
+
+        try {
+            // Call the LapakGaming service and pass the required and optional data
+            $response = $this->lapakgaming->checkUid(
+                $validated['category_code'],
+                $validated['user_id'],
+                $validated['additional_id'] ?? null, // Pass null if not provided
+                $validated['additional_information'] ?? null // Pass null if not provided
+            );
+
+            if ($this->isJson($response)) {
+                return $this->buildResponse(true, 200, json_decode($response, true));
+            } else {
+                return $this->buildResponse(true, 200, ['success' => false, 'errors' => $response]);
+            }
+        } catch (\Exception $e) {
             return $this->buildResponse(false, 500, ['success' => false, 'errors' => $e->getMessage()]);
         }
     }
