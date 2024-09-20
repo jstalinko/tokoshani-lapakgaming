@@ -155,18 +155,30 @@ class TokoshaniLapakgaming
     public function createOrder($userId, $additionalId, $countOrder, $productCode)
     {
         try {
+            // Prepare the payload
+            $payload = [
+                'count_order' => $countOrder,
+                'product_code' => $productCode,
+            ];
+    
+            // Only include user_id if it's not null
+            if ($userId !== null) {
+                $payload['user_id'] = $userId;
+            }
+    
+            // Only include additional_id if it's not null
+            if ($additionalId !== null) {
+                $payload['additional_id'] = $additionalId;
+            }
+    
+            // Send the request
             $response = $this->client->request('POST', 'order', [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $this->apikey
                 ],
-                'json' => [
-                    'user_id' => $userId,
-                    'additional_id' => $additionalId,
-                    'count_order' => $countOrder,
-                    'product_code' => $productCode,
-                ],
+                'json' => $payload,
             ]);
-
+    
             // Get the response body
             $body = $response->getBody();
             return $body->getContents();
@@ -180,6 +192,7 @@ class TokoshaniLapakgaming
             }
         }
     }
+    
 
     public function getOrderStatus($tid)
     {
